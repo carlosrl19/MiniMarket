@@ -1,0 +1,56 @@
+.dt-buttons {
+  margin-bottom: 10px;
+  padding: 5px;
+  margin: 5px;
+  font-size: small;
+  border: none;
+}
+
+.btnExcel {
+  background-color: #379237;
+  border: none;
+  color: #ffffff;
+}
+
+.btnExcel:hover {
+  background-color: #54b435;
+  border: none;
+  color: #ffffff;
+}
+
+.btnPDF {
+  background-color: #f72e4e;
+  border: none;
+  color: #ffffff;
+}
+
+.btnPDF:hover {
+  background-color: #ec546c;
+  border: none;
+  color: #ffffff;
+}
+
+/* Ocultar buscador de datatable */
+.dataTables_filter {
+  display: none;
+}
+
+/* Texto de muestra por página - lado superior */
+.dataTables_length{
+  font-size: 0.8rem;
+}
+
+/* Texto de muestra por página - lado inferior */
+.dataTables_info{
+  font-size: 0.8rem;
+}
+
+/* Paginación */
+.paginate_button{
+  font-size: 0.8rem;
+}
+
+.dataTables_wrapper .dt-buttons {
+  text-align: center;
+  padding: 2px 10px 2px 10px;
+}

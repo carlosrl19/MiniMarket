@@ -1,0 +1,20 @@
+/* Ocultar las flechas de incremento y decremento en input type number */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.table thead {
+    position: sticky;
+    top: 0;
+    background-color: #f9f9f9;
+    padding: 5px 0px 5px 0px;
+}
+
+.card-header-fixed {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: #f9f9f9;
+}
