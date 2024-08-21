@@ -17,18 +17,18 @@
 			</td>
 			<td class="info_empresa">
 				<div>
-					<span class="h2"><strong>MINIMARKET ACAI</strong></span>
-					<p>Todo lo que necesites</p>
-					<p>Teléfono: +(504) 8965-2710</p>
-					<p>Ubicados entre 13 y 14 calle SO, esquina opuesta a Planet Fitness Gym.</p>
+					<span style="font-size: clamp(0.8rem, 3vw, 0.9rem);"><strong>MINIMARKET ACAI</strong></span>
+					<p>Plaza 20, 20 Calle SE, 21103 San Pedro Sula, Cortés</p>
 				</div>
 			</td>
 			<td class="info_factura">
-				<div class="round">
+				<div>
 					<span class="h3">Factura</span>
+					<p></p>
+					<p></p>
+					<p></p>
 					<p><strong>No. Factura:</strong> {{$venta->numero_factura_venta}}</p>
 					<p><strong>Fecha:</strong>  {{\Carbon\Carbon::parse($venta->fecha_factura)->isoFormat("DD")}} de {{\Carbon\Carbon::parse($venta->fecha_factura)->isoFormat("MMMM")}}, {{\Carbon\Carbon::parse($venta->fecha_factura)->isoFormat("YYYY")}}</p>
-					<p><strong>Vendedor:</strong> {{ $venta->user->name }}</p>
 				</div>
 			</td>
 		</tr>
@@ -204,28 +204,38 @@ p, label, span, table{
 }
 
 @media print {
-        /* Oculta la barra de navegación superior */
-        .navbar {
-            display: none !important;
-        }
-
-        /* Oculta la barra lateral */
-        .sidebar {
-            display: none !important;
-        }
-        .options{
-            display: none !important;
-        }
-
-        /* Ajusta el ancho del contenido principal */
-        .container.bootdey {
-            width: 100%;
-            margin: 0;
-        }
-
-        /* Ajusta el tamaño de la fuente para la impresión */
-        body {
-            font-size: 12pt;
-        }
+    /* Oculta la barra de navegación superior */
+    .navbar, .sidebar, .options {
+        display: none !important;
     }
+
+    /* Ajusta el ancho del contenido principal para la impresión */
+    #page_pdf {
+        width: 80mm; /* Ajusta al tamaño de papel de la impresora */
+        margin: 0 auto; /* Centra el contenido */
+        font-size: 10pt; /* Tamaño de fuente adecuado para impresión */
+    }
+
+    /* Ajusta los elementos dentro de la factura */
+    #factura_head, #factura_detalle {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    /* Asegúrate de que las tablas ocupen el ancho completo */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 5px; /* Espaciado adecuado */
+        font-size: 9pt; /* Tamaño de fuente más pequeño */
+    }
+
+    /* Oculta elementos de datatable */
+    .dataTables_filter, .dataTables_length, .dataTables_info, .dataTables_paginate {
+        display: none;
+    }
+}
 </style>
