@@ -41,14 +41,14 @@ class UserTableSeeder extends Seeder
             ]
         );
 
-        $us->assignRole('Empleado');
+        $us->assignRole('Administrador');
 
         $us = User::create(
             [
-                'name'=>'Alexandra',
+                'name'=>'Alexandra Acai',
                 'email'=>'alexandra@acai.com',
-                'password' => bcrypt('alexandrita001'),
-                'type'=>'Empleado',
+                'password' => bcrypt('alexa001'),
+                'type'=>'Administrador',
                 'customer'=>'mayorista',
                 'address'=>'San Pedro Sula, Honduras',
                 'telephone'=>'89001122',
@@ -56,9 +56,11 @@ class UserTableSeeder extends Seeder
             ]
         );
 
+        $us->assignRole('Administrador');
+
         $us = User::create(
             [
-                'name'=>'Karla',
+                'name'=>'Karla Acai',
                 'email'=>'karla@acai.com',
                 'password' => bcrypt('karla001.acai'),
                 'type'=>'Empleado',
