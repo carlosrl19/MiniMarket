@@ -3,6 +3,9 @@
 @section('head')
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+    <!-- Tomselect -->
+    <link href="{{ asset('vendor/tomselect/tom-select.min.css') }}" rel="stylesheet">
 @endsection
 
 @section('breadcrumb')
@@ -183,7 +186,7 @@
                             <input type="text" name="compra_id" id="compra_id" value="{{ $compra->id }}" hidden>
                             <div class="col-sm-12">
                                 <label for="producto_id" class="form-label">Productos en inventario:</label>
-                                <select class="form-control @error('producto_id') is-invalid @enderror"
+                                <select class="@error('producto_id') is-invalid @enderror"
                                         id="producto_id"
                                         required autocomplete="off" name="producto_id"  onchange="funcionObtenerCosto()">
                                     <option value="" disabled selected>Seleccione el producto a comprar</option>
@@ -289,5 +292,9 @@
             $('#id_prove').val($('#proveedor_id').val());
          }
     </script>
+
+    <!-- Tomselect -->
+    <script src="{{ asset('vendor/tomselect/tom-select.complete.js') }}"></script>
+    <script src="{{ asset('js/tomselect/ts_products.js') }}"></script>
 
 @endsection
