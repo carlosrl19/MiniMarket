@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>ACAI</title>
+    <title>Minimarket Acai 2</title>
     <!-- FAVICONS ICON -->
 	<link rel="shortcut icon" type="image/ico" href="{{ asset('images/resources/logo.ico') }}">
     
@@ -44,7 +44,9 @@
             <div class="sidebar-brand-icon">
                 <img src="{{ asset('images/resources/sidebar_logo.png') }}" width="60px" height="60px">
             </div>
-            <div class="sidebar-brand-text mx-3">Minimarket ACAI</div>
+            <div class="sidebar-brand-text mx-3">
+                Minimarket ACAI 2
+            </div>
         </a>
 
         @can('dashboard')
