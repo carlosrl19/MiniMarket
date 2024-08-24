@@ -3,7 +3,7 @@
     <!-- Custom fonts for this template -->
     <div class="container-fluid">
         <div class="alert alert-info">
-            <p>En este apartado se mostrará información sobre los ingresos (<i class="text-success fas fa-arrow-up"></i>) y egresos (<i class="text-danger fas fa-arrow-down"></i>)  del Minimarket ACAI, así como el total monetario de ventas del día, semana y mes actual, junto al empleado que realizó dichas ventas.</p>
+            <p>En este apartado se mostrará información sobre los ingresos (<i class="text-success fas fa-arrow-up"></i>) y egresos (<i class="text-danger fas fa-arrow-down"></i>)  del Minimarket ACAI 2, así como el total monetario de ventas del día, semana y mes actual, junto al empleado que realizó dichas ventas.</p>
         </div>
         <!-- Content Row -->
         <div class="row">

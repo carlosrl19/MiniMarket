@@ -60,9 +60,9 @@ class UserTableSeeder extends Seeder
 
         $us = User::create(
             [
-                'name'=>'Karla Acai',
-                'email'=>'karla@acai.com',
-                'password' => bcrypt('karla001.acai'),
+                'name'=>'Vendedor',
+                'email'=>'vendedor@acai.com',
+                'password' => bcrypt('ventas.acai2'),
                 'type'=>'Empleado',
                 'customer'=>'mayorista',
                 'address'=>'San Pedro Sula, Honduras',

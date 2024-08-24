@@ -18,7 +18,7 @@
 			<td class="info_empresa">
 				<div>
 					<span style="font-size: clamp(0.8rem, 3vw, 0.9rem);"><strong>MINIMARKET ACAI</strong></span>
-					<p>Plaza 20, 20 Calle SE, 21103 San Pedro Sula, Cortés</p>
+					<p>Plaza 20, 20 Calle SE, 7 Y 8 avenida SE</p>
 				</div>
 			</td>
 			<td class="info_factura">
