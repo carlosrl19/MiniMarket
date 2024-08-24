@@ -196,11 +196,14 @@
 }
 .plugin-clear_button {
     --ts-pr-clear-button: 1em;
+    position: relative;
 }
 .plugin-clear_button .clear-button {
     background: transparent !important;
     cursor: pointer;
     margin-right: 0 !important;
+    margin-left: 95%;
+    color: red;
     opacity: 0;
     position: absolute;
     right: 2px;
