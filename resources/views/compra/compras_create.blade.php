@@ -235,7 +235,7 @@
 
                             <div class="col-sm-4">
                                 <label for="firstName" class="form-label">Cantidad a comprar:</label>
-                                <input type="number" class="form-control" id="cantidad_detalle_compra"
+                                <input type="number" min="1" class="form-control" id="cantidad_detalle_compra"
                                        name="cantidad_detalle_compra" value="" required>
                             </div>
 
