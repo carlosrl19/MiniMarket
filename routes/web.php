@@ -2,6 +2,7 @@
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Compras\ComprasShow;
+use App\Http\Livewire\Compras\ComprasCreate;
 use App\Http\Livewire\Ventas\VentaCreate;
 use App\Http\Livewire\Ventas\VentaIndex;
 use App\Http\Livewire\Ventas\VentasShow;

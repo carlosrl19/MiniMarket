@@ -146,7 +146,7 @@
                                     <label class="form-label" for="imagen_producto">Imagen:</label>
                                     <input type="file" accept="image/*" style="font-size: clamp(0.7rem, 3vw, 1rem);"
                                            class="form-control @error('imagen_producto') is-invalid @enderror" id="imagen_producto"
-                                           name="imagen_producto" autocomplete="off"
+                                           name="imagen_producto" autocomplete="off" alt="producto-img"
                                            autofocus onchange="mostrar()">
                                     @error('imagen_producto')
                                     <span class="invalid-feedback" role="alert">
@@ -206,8 +206,7 @@
                                  style="display: flex; align-items: center; justify-content: center; padding: 10px">
                                 <div class="col-lg-7 d-none d-lg-block">
                                     <div class="text-center">
-                                        <img id="imagen" src="/images/products/{{ $producto->imagen_producto }}"
-                                             class="img-fluid rounded" width="430" height="430">
+                                        <img id="imagen" src="{{ $producto->imagen_producto ? '/images/products/' . $producto->imagen_producto : 'images/products/no_image_available.png' }}" class="img-fluid rounded" width="600" height="600">
                                     </div>
                                 </div>
                             </div>

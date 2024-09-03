@@ -37,9 +37,7 @@ class ComprasCreate extends Component
 
     public function render()
     {
-
-        return view('livewire.compras.compras-create', [
-            "categorias" => Categoria::all(),
+        return view('compra.compras_create', [
             "provedors" => Proveedor::all(),
             "productos" => Producto::where("marca", "like", "%{$this->filtro_producto}%")
                 ->orWhere("modelo", "like", "%{$this->filtro_producto}%")
@@ -148,8 +146,6 @@ class ComprasCreate extends Component
             "precio_compra" => $producto["prec_compra"],
             "total" => $producto["prec_compra"],
         ];
-
-
 
         // verifico si el producto que se va a agregar ya existe
         $existe = in_array("{$producto['id']}", array_column($this->carrito, 'producto_id'));

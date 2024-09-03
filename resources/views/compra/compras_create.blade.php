@@ -47,6 +47,7 @@
                                 <th>Cantidad</th>
                                 <th>Precio</th>
                                 <th>Subtotal</th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -60,6 +61,9 @@
                                     <td>{{ $detalle->cantidad_detalle_compra }}</td>
                                     <td>L {{ number_format($detalle->precio, 2, ".", ",") }}</td>
                                     <td>L {{ number_format($detalle->precio*$detalle->cantidad_detalle_compra, 2, ".", ",") }}</td>
+                                    <td style="max-width: 4rem">
+                                        <a class="borrar-producto fas text-lg fa-trash-alt text-danger" wire:click.prevent="eliminar_item_carrito({{$i}})"></a>
+                                    </td>
                                 </tr>
                                 @php
                                     $sum += $detalle->precio*$detalle->cantidad_detalle_compra;
@@ -183,63 +187,69 @@
                     @csrf
                     <div class="modal-body">
                         <div class="row g-3">
-                            <input type="text" name="compra_id" id="compra_id" value="{{ $compra->id }}" hidden>
-                            <div class="col-sm-12">
-                                <label for="producto_id" class="form-label">Productos en inventario:</label>
-                                <select class="@error('producto_id') is-invalid @enderror"
-                                        id="producto_id"
-                                        required autocomplete="off" name="producto_id"  onchange="funcionObtenerCosto()">
-                                    <option value="" disabled selected>Seleccione el producto a comprar</option>
-                                    @foreach ($productos as $producto)
-                                        <option value="{{ $producto->id }}" {{ old('producto_id') == $producto->id ? 'selected' : '' }}>{{$producto['name']}} {{$producto['marca']}} - {{$producto['modelo']}}</option>
-                                    @endforeach
-                                </select>
-                                @error('producto_id')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                            </div>
-
-                            <div class="col-sm-4">
-                                <label for="precio" class="text-secondary-d1">Precio de compra:</label>
-                                <input type="text"
-                                       class="form-control @error('precio') is-invalid @enderror"
-                                       id="precio"
-                                       name="precio" value="{{ old('precio') }}" required
-                                       autocomplete="off"
-                                        readonly
-                                       style="background-color: white">
-                                @error('precio')
-                                <span class="invalid-feedback" role="alert">
+                            <div class="col-6">
+                                <input type="text" name="compra_id" id="compra_id" value="{{ $compra->id }}" hidden>
+                                <div class="col-sm-12">
+                                    <label for="producto_id" class="form-label">Productos en inventario:</label>
+                                    <select class="@error('producto_id') is-invalid @enderror"
+                                            id="producto_id"
+                                            required autocomplete="off" name="producto_id"  onchange="funcionObtenerCosto()">
+                                        <option value="" disabled selected>Seleccione el producto a comprar</option>
+                                        @foreach ($productos as $producto)
+                                            <option value="{{ $producto->id }}" {{ old('producto_id') == $producto->id ? 'selected' : '' }}>{{$producto['marca']}} - {{$producto['modelo']}}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('producto_id')
+                                    <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                                @enderror
+                                    @enderror
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <label for="precio" class="text-secondary-d1">Precio de compra:</label>
+                                    <input type="text"
+                                        class="form-control @error('precio') is-invalid @enderror"
+                                        id="precio"
+                                        name="precio" value="{{ old('precio') }}" required
+                                        autocomplete="off"
+                                            readonly
+                                        style="background-color: white; border-left: 4px solid lightgray;">
+                                    @error('precio')
+                                    <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <label for="existencia" class="text-secondary-d1">Existencia actual:</label>
+                                    <input type="text"
+                                        class="form-control @error('existencia') is-invalid @enderror"
+                                        id="existencia"
+                                        name="existencia" value="{{ old('existencia') }}" required
+                                        autocomplete="off"
+                                            readonly
+                                        style="background-color: white; border-left: 4px solid lightgray;">
+                                    @error('existencia')
+                                    <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <label for="firstName" class="form-label">Cantidad a comprar:</label>
+                                    <input type="number" min="1" class="form-control" id="cantidad_detalle_compra"
+                                        name="cantidad_detalle_compra" value="" required>
+                                </div>
+
+                                <input type="text" id="id_prove" name="id_prove" hidden>
                             </div>
 
-                            <div class="col-sm-4">
-                                <label for="existencia" class="text-secondary-d1">Existencia actual:</label>
-                                <input type="text"
-                                       class="form-control @error('existencia') is-invalid @enderror"
-                                       id="existencia"
-                                       name="existencia" value="{{ old('existencia') }}" required
-                                       autocomplete="off"
-                                        readonly
-                                       style="background-color: white">
-                                @error('existencia')
-                                <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                            <div class="col-6">
+                                <img src="/images/products/{{$producto->imagen_producto}}" width="320px" height="240px" style="object-fit: contain; border-radius: 10%; padding: 15px">
                             </div>
-
-                            <div class="col-sm-4">
-                                <label for="firstName" class="form-label">Cantidad a comprar:</label>
-                                <input type="number" min="1" class="form-control" id="cantidad_detalle_compra"
-                                       name="cantidad_detalle_compra" value="" required>
-                            </div>
-
-                            <input type="text" id="id_prove" name="id_prove" hidden>
                         </div>
                     </div>
 
