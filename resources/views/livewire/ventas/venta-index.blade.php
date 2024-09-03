@@ -8,7 +8,7 @@
 @endsection
 
 @section('create')
-    <button id="abrirCierreCajaModalBtn" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#cierreCajaModal"><i class="fas fa-file-pdf"></i> Cierre de caja</button>
+    <button id="abrirCierreCajaModalBtn" class="btn btn-sm btn-danger" style="font-size: clamp(0.6rem, 3vw, 0.7rem)" data-toggle="modal" data-target="#cierreCajaModal"><i class="fas fa-file-pdf"></i> Cierre de caja</button>
 @endsection
 
 <div>

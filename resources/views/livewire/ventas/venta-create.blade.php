@@ -24,12 +24,12 @@
                             <div style="max-height: 65vh; overflow-y: auto;">
                                 <table class="table table-striped table-bordered border-b-2">
                                     <!-- Encabezado de la tabla -->
-                                    <thead class="text-secondary" style="font-size: clamp(0.5rem, 3vw, 1rem);">
+                                    <thead class="text-secondary" style="font-size: clamp(0.6rem, 3vw, 0.8rem)">
                                         <tr>
-                                            <th>Producto</th>
-                                            <th>Cantidad</th>
-                                            <th>Precio</th>
-                                            <th>Subtotal</th>
+                                            <th>PRODUCTO</th>
+                                            <th>CANTIDAD</th>
+                                            <th>PRECIO</th>
+                                            <th>SUBTOTAL</th>
                                             <th style="max-width: 4rem"></th>
                                         </tr>
                                     </thead>
@@ -70,9 +70,22 @@
                                 <span id="totalAmount" style="margin-left: auto;">{{number_format( $total_carrito, 2, ".", ",") }}</span>
                             </p>
                             <input type="text" name="pagado" hidden>
+
+                            @if($total_carrito == 0)
+                            <button class="btn btn-warning" type="button" disabled style="font-size: clamp(0.5rem, 3vw, 1rem); border: none; margin: 5px; width: 100%">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <span style="font-size: clamp(0.6rem, 3vw, 0.82rem)">
+                                    Agregar productos
+                                </span>
+                            </button>
+                            @else
                             <a ref="#" wire:click.prevent="guardar({{ true }})" class="btn btn-primary" id="Submit" type="button" style="font-size: clamp(0.5rem, 3vw, 1rem); border: none; margin: 5px; width: 100%">
-                                Finalizar venta
+                                <i class="fas fa-check-circle"></i>
+                                <span style="font-size: clamp(0.6rem, 3vw, 0.82rem)">
+                                    Finalizar venta
+                                </span>
                             </a>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -84,7 +97,7 @@
                 <div class="card-header card-header-fixed">
                     <div class="mb-1" style="display: flex;">
                         <button class="btn btn-sm btn-danger" type="button" disabled><i class="fas fa-search"></i></button>
-                        <input type="text" autocomplete="off" name="buscar_producto" id="buscar_producto" wire:model="filtro_producto" class="form-control border-1 small" placeholder="Buscar producto" autocomplete="off" aria-label="Search" aria-describedby="basic-addon2">
+                        <input type="text" autocomplete="off" name="buscar_producto" id="buscar_producto" wire:model="filtro_producto" class="form-control border-1 small" placeholder="Buscar producto..." autocomplete="off" aria-label="Search" aria-describedby="basic-addon2">
                     </div>
                 </div>
                 <div class="card-body">
