@@ -14,11 +14,8 @@
 
 <button id="abrirCierreCajaModalBtn" class="btn btn-sm btn-danger" style="font-size: clamp(0.6rem, 3vw, 0.7rem)" data-toggle="modal" data-target="#cierreCajaModal"><i class="fas fa-file-pdf"></i> Cierre de caja</button>
 
-<a class="btn btn-sm btn-success" style="font-size: clamp(0.6rem, 3vw, 0.7rem)" href="{{ route("compras.create") }}">
+<a class="btn btn-sm btn-success" style="font-size: clamp(0.6rem, 3vw, 0.7rem)" href="{{ route('compras.create', $com->count() > 0 ? $com[0]->id : null) }}">
     <i class="fa fa-plus-square" style="color: white;"></i>
-    @php
-        $com = App\Models\Compra::where('estado_compra','=','p')->where('user_id','=',Auth::user()->id)->get();
-    @endphp
     
     @if($com->count() == 0)
         Registrar compra
@@ -26,6 +23,7 @@
         Continuar compra
     @endif
 </a>
+
 @endsection
 @endcan
 

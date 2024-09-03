@@ -48,7 +48,6 @@ class ComprasCreate extends Component
             ->section('content');
     }
 
-
     public function mount($id = null)
     {
         if ($id != null) {

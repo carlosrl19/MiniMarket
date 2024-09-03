@@ -18,9 +18,12 @@ class CompraClienteController extends Controller
     public function index()
     {
         $compras = Compra::get();
-        return view('compra.compras_index')->with('compras', $compras);
+        $com = Compra::where('estado_compra', '=', 'p')
+            ->where('user_id', '=', Auth::user()->id)
+            ->get();
+    
+        return view('compra.compras_index', compact('compras', 'com'));
     }
-
     public function create()
     {
         $provedores = Proveedor::all();
@@ -180,7 +183,6 @@ class CompraClienteController extends Controller
 
         return redirect()->route('compras.index')->with("exito", "La compra fue registrada exitosamente.");
     }
-
     public function destroy($id)
     {
         DB::delete('delete from detalle_compras where compra_id = ?', [$id]);

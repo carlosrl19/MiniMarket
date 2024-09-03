@@ -258,6 +258,7 @@
 
                             <div class="col-6">
                                 <div class="card" style="border: 1px solid #e3e3e3">
+                                    <span style="font-size: clamp(0.6rem, 3vw, 0.8rem)">Imagen del producto</span>
                                     <img id="imagen_producto" src="/images/products/no_image_available.png" width="auto" height="280" style="object-fit: contain; padding: 15px">
                                 </div>
                             </div>
