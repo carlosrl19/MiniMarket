@@ -52,11 +52,7 @@
                 @endforeach
             @else
             <tr>
-                <td></td>
-                <td></td>
-                <td>El día de hoy no se ha realizado ninguna compra</td>
-                <td></td>
-                <td></td>
+                <td colspan="5" class="textcenter">No existen ventas registradas este día para ser mostradas.</td>
             </tr>
             @endif
         </tbody>

@@ -117,7 +117,7 @@
                                     <strong><i class="fas fa-calendar-check"></i> Cierre de caja (Hoy)</strong>
                                 </div>
                                 <div class="card-body">
-                                    <input style="font-size: clamp(0.7rem, 6vw, 0.8rem);" type="date" class="form-control" id="fechaCierre" name="fechaCierre" readonly>
+                                    <input style="font-size: clamp(0.7rem, 6vw, 0.8rem);" type="date" class="form-control" id="fechaCierre" name="fechaCierre">
                                 </div>
                                 <div class="card-footer">
                                     <button style="display: flex; margin: auto; font-size: clamp(0.7rem, 6vw, 0.8rem);" type="button" class="btn btn-sm btn-danger" id="cerrarCajaBtn">

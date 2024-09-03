@@ -157,6 +157,9 @@
                     if (botonProducto) { // Si existe un botón para ese código
                         botonProducto.click(); // Simula un clic en el botón
                         inputBuscarProducto.value = '';
+
+                        // Simular Ctrl+Z utilizando document.execCommand() -> Se simula para que el input se limpie y pueda escanearse otro producto sin necesidad de limpiar manualmente
+                        document.execCommand('undo', false, null);
                     }
                 }
             });
