@@ -11,8 +11,8 @@
 
 @can('create_purchase')
 @section('create')
-<button id="abrirCierreCajaModalBtn" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#cierreCajaModal"><i class="fas fa-file-pdf"></i> Cierre de caja</button>
-<a class="btn btn-sm btn-success" style="font-size: clamp(0.6rem, 3.2vw, 0.8rem)" href="{{route("compras.create")}}">
+<button id="abrirCierreCajaModalBtn" class="btn btn-sm btn-danger" style="font-size: clamp(0.6rem, 3vw, 0.7rem)" data-toggle="modal" data-target="#cierreCajaModal"><i class="fas fa-file-pdf"></i> Cierre de caja</button>
+<a class="btn btn-sm btn-success" style="font-size: clamp(0.6rem, 3vw, 0.7rem)" href="{{route("compras.create")}}">
     <i class="fa fa-plus-square" style="color: white;"></i>
         @php
             $com = App\Models\Compra::where('estado_compra','=','p')->where('user_id','=',Auth::user()->id)->get();

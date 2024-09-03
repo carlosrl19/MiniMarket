@@ -97,7 +97,7 @@
                                             <div class="card h-100 btn" data-id="{{$pro->id}}" data-codigo="{{$pro->codigo}}" wire:click="agregar_item_carrito({{$pro}})" style="background-color: {{ $pro->existencia == 0 ? '#ff5a5a' : 'inherit' }}">
                                                 <!-- Cantidad en existencia -->
                                                 @php
-                                                $index = array_search("{$pro->id}", array_column($carrito, 'producto_id'));
+                                                    $index = array_search("{$pro->id}", array_column($carrito, 'producto_id'));
                                                 @endphp
                                                 <div class="badge bg-dark position-absolute" style="top: 0.5rem; right: 0.5rem">
                                                     @if(isset($carrito[$index]) && $carrito[$index]["producto_id"] == $pro->id)
@@ -106,14 +106,18 @@
                                                     {{$pro->existencia}} unidades
                                                     @endif
                                                 </div>
+
                                                 <!-- Imagen del producto-->
                                                 <img class="card-img-top" style="object-fit: contain" src="/images/products/{{$pro->imagen_producto}}" width="60px" height="80px" title="{{$pro->marca}} {{$pro->modelo}}"/>
+                                                
                                                 <div style="text-align: center;">
                                                     <div class="text-center">
+
                                                         <!-- Nombre del producto -->
                                                         <p class="nombre {{ $pro->existencia == 0 ? 'text-white' : '' }}" id="nombre" style="width: 120px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">
                                                             <strong style="font-size: 0.7rem" class="text-secondary {{ $pro->existencia == 0 ? 'text-white' : '' }}">{{$pro->marca." ".$pro->modelo}}</strong>
                                                         </p>
+
                                                         <!-- Precio del producto-->
                                                         <div class="p">
                                                             <span id="pre" class="pre {{ $pro->existencia == 0 ? 'text-white' : 'text-muted' }} text-decoration-line">
