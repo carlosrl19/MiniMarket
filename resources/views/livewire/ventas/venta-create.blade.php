@@ -166,4 +166,6 @@
             });
         });
     </script>
+
+    <script src="{{ asset('customjs/submit_1_click_disabler.js')}}"></script>
 </div>

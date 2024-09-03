@@ -1,5 +1,6 @@
 <body>
     <div id="page_pdf">
+        
     <table id="factura_head">
         <tr>
             <td class="info_empresa">
@@ -21,6 +22,7 @@
             </td>
         </tr>
     </table>
+
     <table class="display table table-striped" style="width: 100%">
         <thead style="font-size: 0.7rem; color: #fff; background-color: #0a4661;">
             <tr>

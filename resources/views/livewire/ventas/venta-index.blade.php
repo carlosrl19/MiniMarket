@@ -18,6 +18,7 @@
         <table class="display table table-striped" id="example"  style="font-size: 0.6rem; width: 100%">
             <thead>
                 <tr>
+                    <th>Fecha hora</th>
                     <th>Factura</th>
                     <th>Fecha</th>
                     <th>Total de venta</th>
@@ -27,6 +28,7 @@
             <tbody>
                 @foreach($ventas as $venta)
                 <tr style="font-family: 'Nunito', sans-serif; font-size: small">
+                    <td>{{ $venta->created_at }}</td>
                     <td>
                         @can('details_sales') 
                         <strong>
@@ -50,6 +52,7 @@
             </tbody>
             <tfoot>
                 <tr>
+                    <th></th>
                     <th></th>
                     <th></th>
                     <th></th>

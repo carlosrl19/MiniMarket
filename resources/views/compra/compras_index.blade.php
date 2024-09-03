@@ -46,6 +46,7 @@
         <table class="display table table-striped" id="example"  style="font-size: 0.6rem; width: 100%">
             <thead>
                 <tr>
+                    <th>Fecha hora</th>
                     <th>Documento</th>
                     <th>Fecha</th>
                     <th>Proveedor</th>
@@ -56,6 +57,7 @@
             <tbody>
             @foreach($compras as $compra)
                 <tr style="font-family: 'Nunito', sans-serif; font-size: small">
+                    <td>{{ $compra->created_at }}</td>
                     <td style="text-transform: uppercase">
                     @can('details_purchase')
                         <strong>
@@ -69,7 +71,10 @@
                     </td>
 
                     <td>
-                        <strong>{{ \Carbon\Carbon::parse($compra->fecha_compra)->format('d/m/Y') }}</strong>
+                    <strong>{{ \Carbon\Carbon::parse($compra->fecha_compra)->isoFormat('DD') }} de
+                            {{ \Carbon\Carbon::parse($compra->fecha_compra)->isoFormat('MMMM') }},
+                            {{ \Carbon\Carbon::parse($compra->fecha_compra)->isoFormat('YYYY') }}
+                        </strong>
                     </td>
                         
                     <td>{{ $compra->proveedor->nombre_proveedor }}</td>
@@ -92,6 +97,7 @@
             </tbody>
             <tfoot>
                 <tr>
+                    <th></th>
                     <th></th>
                     <th></th>
                     <th></th>
