@@ -1,9 +1,6 @@
 @extends('layouts.layouts')
 
 @section('head')
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-
     <!-- Tomselect -->
     <link href="{{ asset('vendor/tomselect/tom-select.min.css') }}" rel="stylesheet">
 @endsection
@@ -182,7 +179,6 @@
                 <div class="modal-header" style="background-color: #b02a37; color: white; font-size: clamp(0.7rem, 6vw, 1rem);">
                     <p class="modal-title" id="staticBackdropLabel">Agregar productos</p>
                 </div>
-
                 <form action="{{ route('compras.store') }}" method="POST">
                     @csrf
                     <div class="modal-body">
@@ -193,10 +189,14 @@
                                     <label for="producto_id" class="form-label">Productos en inventario:</label>
                                     <select class="@error('producto_id') is-invalid @enderror"
                                             id="producto_id"
-                                            required autocomplete="off" name="producto_id"  onchange="funcionObtenerCosto()">
+                                            required autocomplete="off" name="producto_id" onchange="funcionObtenerCosto(); mostrarImagen(this)">
                                         <option value="" disabled selected>Seleccione el producto a comprar</option>
                                         @foreach ($productos as $producto)
-                                            <option value="{{ $producto->id }}" {{ old('producto_id') == $producto->id ? 'selected' : '' }}>{{$producto['marca']}} - {{$producto['modelo']}}</option>
+                                            <option value="{{ $producto->id }}" 
+                                                    data-imagen="{{ $producto->imagen_producto }}" 
+                                                    {{ old('producto_id') == $producto->id ? 'selected' : '' }}>
+                                                {{$producto['marca']}} - {{$producto['modelo']}}
+                                            </option>
                                         @endforeach
                                     </select>
                                     @error('producto_id')
@@ -206,39 +206,48 @@
                                     @enderror
                                 </div>
 
-                                <div class="col-sm-4">
-                                    <label for="precio" class="text-secondary-d1">Precio de compra:</label>
-                                    <input type="text"
-                                        class="form-control @error('precio') is-invalid @enderror"
-                                        id="precio"
-                                        name="precio" value="{{ old('precio') }}" required
-                                        autocomplete="off"
-                                            readonly
-                                        style="background-color: white; border-left: 4px solid lightgray;">
-                                    @error('precio')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
+                                <br>
+                                <div class="row g-3">
+                                    <div class="col-6">
+                                        <div class="col-sm-12">
+                                            <label for="precio" class="text-secondary-d1">Precio de compra:</label>
+                                            <input type="text"
+                                                class="form-control @error('precio') is-invalid @enderror"
+                                                id="precio"
+                                                name="precio" value="{{ old('precio') }}" required
+                                                autocomplete="off"
+                                                readonly
+                                                style="background-color: white; border-left: 4px solid lightgray;">
+                                            @error('precio')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <br>
+                                    <div class="col-6">
+                                        <div class="col-sm-12">
+                                            <label for="existencia" class="text-secondary-d1">Existencia actual:</label>
+                                            <input type="text"
+                                                class="form-control @error('existencia') is-invalid @enderror"
+                                                id="existencia"
+                                                name="existencia" value="{{ old('existencia') }}" required
+                                                autocomplete="off"
+                                                readonly
+                                                style="background-color: white; border-left: 4px solid lightgray;">
+                                            @error('existencia')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <div class="col-sm-4">
-                                    <label for="existencia" class="text-secondary-d1">Existencia actual:</label>
-                                    <input type="text"
-                                        class="form-control @error('existencia') is-invalid @enderror"
-                                        id="existencia"
-                                        name="existencia" value="{{ old('existencia') }}" required
-                                        autocomplete="off"
-                                            readonly
-                                        style="background-color: white; border-left: 4px solid lightgray;">
-                                    @error('existencia')
-                                    <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-
-                                <div class="col-sm-4">
+                                <br>
+                                <div class="col">
                                     <label for="firstName" class="form-label">Cantidad a comprar:</label>
                                     <input type="number" min="1" class="form-control" id="cantidad_detalle_compra"
                                         name="cantidad_detalle_compra" value="" required>
@@ -248,18 +257,18 @@
                             </div>
 
                             <div class="col-6">
-                                <img src="/images/products/{{$producto->imagen_producto}}" width="320px" height="240px" style="object-fit: contain; border-radius: 10%; padding: 15px">
+                                <div class="card" style="border: 1px solid #e3e3e3">
+                                    <img id="imagen_producto" src="/images/products/no_image_available.png" width="auto" height="280" style="object-fit: contain; padding: 15px">
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-----ESTE BOTON ES EL BOTON DEL MODAL PARA CREAR EL NUEVO INVENTARIO-->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-sm" style="background-color: #2c3034; color: #fff;" data-dismiss="modal">Cancelar
                         </button>
                         <button type="submit" class="btn btn-sm btn-primary">Continuar</button>
                     </div>
-
                 </form>
             </div>
         </div>
@@ -306,5 +315,29 @@
     <!-- Tomselect -->
     <script src="{{ asset('vendor/tomselect/tom-select.complete.js') }}"></script>
     <script src="{{ asset('js/tomselect/ts_products.js') }}"></script>
+
+    <script>
+        function mostrarImagen(select) {
+            const selectedOption = select.options[select.selectedIndex];
+            const imagenUrl = selectedOption.getAttribute('data-imagen');
+            const imagenElement = document.getElementById('imagen_producto');
+            
+            if (imagenUrl && imagenUrl.trim() !== '') {
+                // Verifica si la imagen existe realmente haciendo una petición
+                const img = new Image();
+                img.onload = function() {
+                    imagenElement.src = '/images/products/' + imagenUrl;
+                };
+                img.onerror = function() {
+                    // Si no se encuentra la imagen, carga la imagen por defecto
+                    imagenElement.src = '/images/products/no_image_available.png';
+                };
+                img.src = '/images/products/' + imagenUrl;
+            } else {
+                // Si no hay imagen, carga la imagen por defecto
+                imagenElement.src = '/images/products/no_image_available.png';
+            }
+        }
+    </script>
 
 @endsection

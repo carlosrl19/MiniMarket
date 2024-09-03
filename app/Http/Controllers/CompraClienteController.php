@@ -26,7 +26,7 @@ class CompraClienteController extends Controller
         $provedores = Proveedor::all();
         $productos = Producto::join('categorias', 'categorias.id', '=', 'productos.id_categoria')
             ->select('productos.id','productos.codigo', 'productos.marca','productos.modelo', 'productos.existencia',
-                'productos.prec_venta_may', 'productos.prec_venta_fin','productos.prec_compra','productos.id_categoria',
+                'productos.prec_venta_may', 'productos.imagen_producto', 'productos.prec_venta_fin','productos.prec_compra','productos.id_categoria',
                 'categorias.name')
             ->get();
         $compra = Compra::where('estado_compra', '=', 'p')->where('user_id', '=', Auth::user()->id)->get();
