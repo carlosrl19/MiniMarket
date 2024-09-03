@@ -52,7 +52,7 @@
                 @endforeach
             @else
             <tr>
-                <td colspan="5" class="textcenter">No existen ventas registradas este día para ser mostradas.</td>
+                <td colspan="5" class="textcenter" style="text-decoration: underline">No existen ventas registradas este día para ser mostradas.</td>
             </tr>
             @endif
         </tbody>

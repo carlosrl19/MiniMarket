@@ -30,11 +30,11 @@ Route::group(['middleware' => 'auth'], function () {
     // Factura ventas
     Route::get('/ventas/facturas/{venta}', VentasShow::class)->name('ventas.facturas');
 
-    // Cierre de caja diario
+    // Cierre de caja diario Venta / Compra
     Route::get('/generar-factura', 'App\Http\Controllers\VentaClienteController@generarFacturaPorFecha')->name('ventas.generar-factura');
     Route::get('/generar-factura-compras', 'App\Http\Controllers\CompraClienteController@generarFacturaPorFecha')->name('compras.generar-factura-compras');
 
-    // Cierre de caja mensual
+    // Cierre de caja mensual Venta / Compra
     Route::get('/generar-factura-mes-actual', 'App\Http\Controllers\VentaClienteController@generarFacturaMesActual')->name('ventas.generar-factura-mes-actual');
     Route::get('/generar-factura-mes-actual-compras', 'App\Http\Controllers\CompraClienteController@generarFacturaMesActual')->name('compras.generar-factura-mes-actual-compras');
 

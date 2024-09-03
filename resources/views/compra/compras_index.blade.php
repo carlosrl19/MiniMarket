@@ -102,6 +102,9 @@
         </table>
     </div>
 
+    <div id="toast" class="toast">¡Cierre de caja diario exportado con éxito!</div>
+    <div id="toast_monthly" style="background-color: darkslategray;" class="toast">¡Cierre de caja mensual exportado con éxito!</div>
+
     <!-- Modal Cierre de caja -->
     <div class="modal fade" id="cierreCajaModal" tabindex="-1" role="dialog" aria-labelledby="cierreCajaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -133,17 +136,23 @@
                                     "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
                                     "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
                                 );
-                                $mesActual = date('n');
                                 ?>
 
                                 <div class="card-header">
                                     <strong><i class="fas fa-calendar-alt"></i> Cierre de caja (Mensual)</strong>
                                 </div>
                                 <div class="card-body">
-                                    <input type="text" value="<?php echo $meses[$mesActual-1]; ?>" style="font-size: clamp(0.7rem, 6vw, 0.8rem);" class="form-control" id="fechaCierreMensual" name="fechaCierreMensual" readonly>
+                                    <select style="font-size: clamp(0.7rem, 6vw, 0.8rem);" class="form-control" id="fechaCierreMensual" name="fechaCierreMensual">
+                                        <?php
+                                        foreach ($meses as $index => $mes) {
+                                            $selected = ($index + 1 == date('n')) ? 'selected' : '';
+                                            echo "<option value='" . ($index + 1) . "' $selected>$mes</option>";
+                                        }
+                                        ?>
+                                    </select>
                                 </div>
                                 <div class="card-footer">
-                                    <button style="display: flex; margin: auto; font-size: clamp(0.7rem, 6vw, 0.8rem);" type="button" class="btn btn-sm btn-danger" id="cerrarCajaMensualBtn">
+                                    <button style="display: flex; margin: auto; font-size: clamp(0.7rem, 6vw, 0.8rem);" type="button" class="btn btn-sm btn-danger" id="cerrarCajaMensualBtn" onclick="exportarPDF()">
                                         Exportar a PDF
                                     </button>
                                 </div>
@@ -158,8 +167,28 @@
         </div>
     </div>
 
+    <style>
+    .toast {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        display: none; /* Oculto por defecto */
+        transition: opacity 0.5s ease;
+        opacity: 0;
+    }
+
+    .toast.show {
+        display: block;
+        opacity: 1;
+    }
+    </style>
 
     @include('layouts.datatables')
+
     <script>
         document.getElementById('cerrarCajaBtn').addEventListener('click', function() {
             let fecha = document.getElementById('fechaCierre').value;
@@ -170,10 +199,11 @@
     </script>
 
     <script>
-        document.getElementById('cerrarCajaMensualBtn').addEventListener('click', function() {
-            // Redirigir al servidor para generar el PDF con las ventas del mes actual
-            window.location.href = '/generar-factura-mes-actual-compras';
-        });
+        function exportarPDF() {
+            const mesSeleccionado = document.getElementById('fechaCierreMensual').value;
+            const url = `/generar-factura-mes-actual-compras?fechaCierreMensual=${mesSeleccionado}`;
+            window.location.href = url;
+        }
     </script>
 
     <script>
@@ -185,6 +215,39 @@
         
         // Asignar la fecha actual al campo de fecha
         document.getElementById('fechaCierre').value = fechaHoy;
+    </script>
+
+    <!-- Toast -->
+    <script>
+        document.getElementById('cerrarCajaBtn').addEventListener('click', function() {
+            const toast = document.getElementById('toast');
+
+            // Retraso de 1 segundo (1000 ms) antes de mostrar el toast
+            setTimeout(function() {
+                toast.classList.add('show');
+
+                // Ocultar el toast después de 3 segundos
+                setTimeout(function() {
+                    toast.classList.remove('show');
+                }, 4800);
+            }, 1000);
+        });
+    </script>
+
+    <script>
+        document.getElementById('cerrarCajaMensualBtn').addEventListener('click', function() {
+            const toast = document.getElementById('toast_monthly');
+
+            // Retraso de 1 segundo (1000 ms) antes de mostrar el toast
+            setTimeout(function() {
+                toast.classList.add('show');
+
+                // Ocultar el toast después de 3 segundos
+                setTimeout(function() {
+                    toast.classList.remove('show');
+                }, 4800);
+            }, 2000);
+        });
     </script>
 
     <script src="{{ asset('dataTable_configs/dataTable_purchase.js') }}"></script>

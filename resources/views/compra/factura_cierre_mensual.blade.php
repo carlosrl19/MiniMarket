@@ -14,13 +14,12 @@
                 <div class="round">
                     <span class="h3">Compras - cierre de caja mensual</span>
                     <?php
-                        $meses = array(
-                            "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-                            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-                        );
-                        $mesActual = date('n');
+                    $meses = array(
+                        "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+                    );
                     ?>
-                    <p><strong>Mes:</strong> <?php echo $meses[$mesActual-1]; ?> </p>
+                    <p><strong>Mes:</strong> <?php echo $meses[$mesSeleccionado - 1]; ?> - {{ \Carbon\Carbon::now()->format('Y') }}</p>
                     <p><strong>Fecha actual:</strong> {{ \Carbon\Carbon::now()->format('d-m-Y') }}</p>
                     <p><strong>Hora actual:</strong> {{ \Carbon\Carbon::now()->format('h:i A') }}</p>
                     <br>
@@ -61,11 +60,7 @@
                 @endforeach
             @else
             <tr>
-                <td></td>
-                <td></td>
-                <td>Este mes no se ha realizado ninguna compra</td>
-                <td></td>
-                <td></td>
+                <td colspan="5" class="textcenter" style="text-decoration: underline">No existen ventas registradas este mes para ser mostradas.</td>
             </tr>
             @endif
         </tbody>

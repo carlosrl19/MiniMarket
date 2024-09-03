@@ -82,46 +82,59 @@ class CompraClienteController extends Controller
         $dompdf->stream($nombreArchivo, ['Attachment' => true]);
     }
 
-    public function generarFacturaMesActual()
+    public function generarFacturaMesActual(Request $request)
     {
-        // Obtener el primer día del mes actual
-        $primerDiaMes = now()->startOfMonth()->toDateString();
+        // Obtener el mes seleccionado
+        $mesSeleccionado = $request->input('fechaCierreMensual');
         
-        // Obtener el último día del mes actual
-        $ultimoDiaMes = now()->endOfMonth()->toDateString();
-
-        // Filtrar las ventas del mes actual
+        // Obtener el primer día del mes seleccionado
+        $primerDiaMes = now()->month($mesSeleccionado)->startOfMonth()->toDateString();
+        
+        // Obtener el último día del mes seleccionado
+        $ultimoDiaMes = now()->month($mesSeleccionado)->endOfMonth()->toDateString();
+    
+        // Filtrar las ventas del mes seleccionado
         $compras = Compra::whereBetween('fecha_compra', [$primerDiaMes, $ultimoDiaMes])->get();
-
-        // Generar HTML para el PDF
-        $html = view('compra.factura_cierre_mensual', ['compras' => $compras, 'fecha' => ''])->render();
-
+    
+        // Generar HTML para el PDF y pasar el mes seleccionado
+        $html = view('compra.factura_cierre_mensual', [
+            'compras' => $compras,
+            'fecha' => '',
+            'mesSeleccionado' => $mesSeleccionado // Pasar el mes seleccionado a la vista
+        ])->render();
+    
         // Configurar opciones para Dompdf
         $options = new Options();
         $options->set('isHtml5ParserEnabled', true);
-
+    
         // Crear instancia de Dompdf
         $dompdf = new Dompdf($options);
         
         // Cargar HTML en Dompdf
         $dompdf->loadHtml($html);
-
+    
         // (Opcional) Establecer tamaño de papel y orientación
         $dompdf->setPaper('A4', 'portrait');
-
+    
         // Renderizar el PDF
         $dompdf->render();
-
-        // Establecer el idioma local a español
-        setlocale(LC_TIME, 'es_ES');
-
-        // Nombre del archivo con la fecha y hora actual en español
-        $nombreArchivo = 'Compras del mes ' . strftime('%B %Y') . '.pdf';
-
+    
+        // Array de nombres de meses en español
+        $meses = array(
+            "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+        );
+    
+        // Obtener el nombre del mes en español
+        $nombreMes = $meses[$mesSeleccionado - 1];
+    
+        // Nombre del archivo con el mes en español
+        $nombreArchivo = 'Compras del mes ' . $nombreMes . ' ' . date('Y', strtotime($primerDiaMes)) . '.pdf';
+    
         // Descargar el PDF automáticamente con el nombre personalizado
         $dompdf->stream($nombreArchivo, ['Attachment' => true]);
     }
-
+    
     public function store(Request $request)
     {
         if ( $request->input('id_prove') != '') {
