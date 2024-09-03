@@ -4,7 +4,7 @@
         <tr>
             <td class="info_empresa">
                 <div>
-                    <span class="h2"><strong>MINIMARKET ACAI</strong></span>
+                    <span class="h2"><strong>MINIMARKET ACAI 2</strong></span>
                     <p>Todo lo que necesites</p>
                     <p>Teléfono: +(504) 8965-2710</p>
                     <p>Ubicados en Plaza 20, 20 Calle SE, 7 Y 8 avenida SE</p>

@@ -4,7 +4,7 @@
         <tr>
             <td class="info_empresa">
                 <div>
-                    <span class="h2"><strong>MINIMARKET ACAI</strong></span>
+                    <span class="h2"><strong>MINIMARKET ACAI 2</strong></span>
                     <p>Todo lo que necesites</p>
                     <p>Teléfono: +(504) 8965-2710</p>
                     <p>Ubicados en Plaza 20, 20 Calle SE, 7 Y 8 avenida SE</p>
@@ -18,9 +18,8 @@
                             "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
                             "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
                         );
-                        $mesActual = date('n');
                     ?>
-                    <p><strong>Mes:</strong> <?php echo $meses[$mesActual-1]; ?> </p>
+                    <p><strong>Mes:</strong> <?php echo $meses[$mesSeleccionado - 1]; ?> - {{ \Carbon\Carbon::now()->format('Y') }}</p>
                     <p><strong>Fecha actual:</strong> {{ \Carbon\Carbon::now()->format('d-m-Y') }}</p>
                     <p><strong>Hora actual:</strong> {{ \Carbon\Carbon::now()->format('h:i A') }}</p>
                     <br>
@@ -61,11 +60,7 @@
                 @endforeach
             @else
                 <tr>
-                    <td></td>
-                    <td></td>
-                    <td>Este mes no se ha realizado ninguna venta</td>
-                    <td></td>
-                    <td></td>
+                    <td colspan="5" class="textcenter" style="text-decoration: underline">No existen ventas registradas este mes para ser mostradas.</td>
                 </tr>
             @endif
         </tbody>

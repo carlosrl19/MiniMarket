@@ -71,19 +71,26 @@ class VentaClienteController extends Controller
         $dompdf->stream($nombreArchivo, ['Attachment' => true]);
     }
 
-    public function generarFacturaMesActual()
+    public function generarFacturaMesActual(Request $request)
     {
-        // Obtener el primer día del mes actual
-        $primerDiaMes = now()->startOfMonth()->toDateString();
+        // Obtener el mes seleccionado
+        $mesSeleccionado = $request->input('fechaCierreMensual');
         
-        // Obtener el último día del mes actual
-        $ultimoDiaMes = now()->endOfMonth()->toDateString();
+        // Obtener el primer día del mes seleccionado
+        $primerDiaMes = now()->month($mesSeleccionado)->startOfMonth()->toDateString();
+                
+        // Obtener el último día del mes seleccionado
+        $ultimoDiaMes = now()->month($mesSeleccionado)->endOfMonth()->toDateString();
 
         // Filtrar las ventas del mes actual
         $ventas = Venta::whereBetween('fecha_factura', [$primerDiaMes, $ultimoDiaMes])->get();
 
         // Generar HTML para el PDF
-        $html = view('livewire.ventas.factura_cierre_mensual', ['ventas' => $ventas, 'fecha' => ''])->render();
+        $html = view('livewire.ventas.factura_cierre_mensual', [
+            'ventas' => $ventas,
+            'fecha' => '',
+            'mesSeleccionado' => $mesSeleccionado
+        ])->render();
 
         // Configurar opciones para Dompdf
         $options = new Options();
@@ -101,12 +108,21 @@ class VentaClienteController extends Controller
         // Renderizar el PDF
         $dompdf->render();
 
+        // Array de nombres de meses en español
+        $meses = array(
+            "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+        );
+            
+        // Obtener el nombre del mes en español
+        $nombreMes = $meses[$mesSeleccionado - 1];
+
         // Establecer el idioma local a español
         setlocale(LC_TIME, 'es_ES');
 
         // Nombre del archivo con la fecha y hora actual en español
-        $nombreArchivo = 'Ventas del mes ' . strftime('%B %Y') . '.pdf';
-
+        $nombreArchivo = 'Ventas del mes ' . $nombreMes . ' ' . date('Y', strtotime($primerDiaMes)) . '.pdf';
+        
         // Descargar el PDF automáticamente con el nombre personalizado
         $dompdf->stream($nombreArchivo, ['Attachment' => true]);
     }

@@ -70,7 +70,7 @@
                                 <textarea class="form-control @error('description') is-invalid @enderror" id="description"
                                           name="description" autocomplete="off"
                                           autofocus placeholder="{{ __('Descripción') }}"
-                                          rows="3"
+                                          rows="5" style="resize: none"
                                 >@if(old("description")){{old("description")}}@else{{$categoria->description}}@endif</textarea>
                                 @error('description')
                                 <span class="invalid-feedback" role="alert">

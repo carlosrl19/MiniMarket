@@ -81,7 +81,6 @@ class CompraClienteController extends Controller
         // Descargar el PDF automáticamente con el nombre personalizado
         $dompdf->stream($nombreArchivo, ['Attachment' => true]);
     }
-
     public function generarFacturaMesActual(Request $request)
     {
         // Obtener el mes seleccionado
@@ -100,7 +99,7 @@ class CompraClienteController extends Controller
         $html = view('compra.factura_cierre_mensual', [
             'compras' => $compras,
             'fecha' => '',
-            'mesSeleccionado' => $mesSeleccionado // Pasar el mes seleccionado a la vista
+            'mesSeleccionado' => $mesSeleccionado
         ])->render();
     
         // Configurar opciones para Dompdf

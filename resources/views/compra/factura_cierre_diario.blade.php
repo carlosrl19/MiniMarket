@@ -51,9 +51,9 @@
                     @endforeach
                 @endforeach
             @else
-            <tr>
-                <td colspan="5" class="textcenter" style="text-decoration: underline">No existen ventas registradas este día para ser mostradas.</td>
-            </tr>
+                <tr>
+                    <td colspan="5" class="textcenter" style="text-decoration: underline">No existen compras registradas este día para ser mostradas.</td>
+                </tr>
             @endif
         </tbody>
         <tfoot id="detalle_totales">

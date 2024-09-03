@@ -119,9 +119,11 @@
                                 <div class="card-header">
                                     <strong><i class="fas fa-calendar-check"></i> Cierre de caja (Hoy)</strong>
                                 </div>
+                                
                                 <div class="card-body">
-                                    <input style="font-size: clamp(0.7rem, 6vw, 0.8rem);" type="date" class="form-control" id="fechaCierre" name="fechaCierre">
+                                    <input style="font-size: clamp(0.7rem, 6vw, 0.8rem);" type="date" class="form-control" id="fechaCierre" name="fechaCierre" max="{{ \Carbon\Carbon::today()->format('Y-m-d') }}">
                                 </div>
+
                                 <div class="card-footer">
                                     <button style="display: flex; margin: auto; font-size: clamp(0.7rem, 6vw, 0.8rem);" type="button" class="btn btn-sm btn-danger" id="cerrarCajaBtn">
                                         Exportar a PDF
@@ -141,16 +143,21 @@
                                 <div class="card-header">
                                     <strong><i class="fas fa-calendar-alt"></i> Cierre de caja (Mensual)</strong>
                                 </div>
+
                                 <div class="card-body">
                                     <select style="font-size: clamp(0.7rem, 6vw, 0.8rem);" class="form-control" id="fechaCierreMensual" name="fechaCierreMensual">
                                         <?php
+                                        $currentMonth = date('n'); // Obtiene el mes actual (1-12)
                                         foreach ($meses as $index => $mes) {
-                                            $selected = ($index + 1 == date('n')) ? 'selected' : '';
-                                            echo "<option value='" . ($index + 1) . "' $selected>$mes</option>";
+                                            $monthValue = $index + 1; // Valor del mes (1-12)
+                                            $selected = ($monthValue == $currentMonth) ? 'selected' : '';
+                                            $disabled = ($monthValue > $currentMonth) ? 'disabled' : ''; // Deshabilita los meses futuros
+                                            echo "<option value='$monthValue' $selected $disabled>$mes</option>";
                                         }
                                         ?>
                                     </select>
                                 </div>
+                                
                                 <div class="card-footer">
                                     <button style="display: flex; margin: auto; font-size: clamp(0.7rem, 6vw, 0.8rem);" type="button" class="btn btn-sm btn-danger" id="cerrarCajaMensualBtn" onclick="exportarPDF()">
                                         Exportar a PDF

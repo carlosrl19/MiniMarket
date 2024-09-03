@@ -62,8 +62,8 @@
                                 <textarea class="form-control @error('description') is-invalid @enderror"
                                           id="description"
                                           name="description" required autocomplete="off"
-                                          autofocus
-                                          rows="3">{{old('description')}}</textarea>
+                                          autofocus style="resize: none"
+                                          rows="5">{{old('description')}}</textarea>
                                 @error('description')
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
