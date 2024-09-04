@@ -36,8 +36,8 @@
             <div class="row" id="tblaBody">
                 <div class="col-lg-6">
                     <div class="table-responsive" id="tblaBody">
-                        <table class="table table-striped" id="dataTable">
-                            <thead class="card-header py-3" style="background: #1a202c; color: white;">
+                    <table class="table table-striped" id="example">
+                        <thead class="card-header py-3" style="background: #1a202c; color: white;">
                             <tr>
                                 <th>N°</th>
                                 <th>Producto</th>
@@ -46,52 +46,51 @@
                                 <th>Subtotal</th>
                                 <th></th>
                             </tr>
-                            </thead>
-                            <tbody>
+                        </thead>
+                        <tbody>
+                            @php
+                                $sum = 0;
+                            @endphp
+                            @forelse($compra->detalle_compra as $i => $detalle)
+                                <tr data-detalle-id="{{ $detalle->id }}">
+                                    <td>{{ ++$i }}</td>
+                                    <td>{{ $detalle->producto->marca }} - {{ $detalle->producto->modelo }}</td>
+                                    <td style="min-width: 15px; max-width: 15px">
+                                        <form action="{{ route('compras.update_list') }}" method="POST" style="display: inline;">
+                                            @csrf
+                                            <input type="text" name="compra_id" value="{{ $compra->id }}" hidden>
+                                            <input type="text" name="producto_id" value="{{ $detalle->producto->id }}" hidden>
+                                            <input type="text" name="precio" value="{{ $detalle->precio }}" hidden>
+                                            <input type="number" min="1" name="cantidad_detalle_compra" style="font-size: clamp(0.6rem, 3vw, 0.7rem);"
+                                                value="{{ $detalle->cantidad_detalle_compra }}" class="form-control cantidad-input">
+                                            <button type="submit" class="btn btn-primary btn-sm" style="display: none">Actualizar</button>
+                                        </form>
+                                    </td>
+                                    <td>L {{ number_format($detalle->precio, 2, ".", ",") }}</td>
+                                    <td>L {{ number_format($detalle->precio * $detalle->cantidad_detalle_compra, 2, ".", ",") }}</td>
+                                    <td style="max-width: 4rem">
+                                        <form action="{{ route('compras.remove_item', $detalle->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE') 
+                                            <button type="submit" class="borrar-producto fas text-lg fa-trash-alt text-danger" style="border: none; background: none; cursor: pointer;"></button>
+                                        </form>
+                                    </td>
+                                </tr>
                                 @php
-                                    $sum = 0;
+                                    $sum += $detalle->precio * $detalle->cantidad_detalle_compra;
                                 @endphp
-                                @forelse($compra->detalle_compra as $i => $detalle)
-                                    <tr data-detalle-id="{{ $detalle->id }}">
-                                        <td>{{ ++$i }}</td>
-                                        <td>{{ $detalle->producto->marca }} - {{ $detalle->producto->modelo }}</td>
-                                        
-                                        <td style="min-width: 15px; max-width: 15px">
-                                            <form action="{{ route('compras.update_list') }}" method="POST" style="display: inline;">
-                                                @csrf
-                                                <input type="text" name="compra_id" id="compra_id" value="{{ $compra->id }}" hidden>
-                                                <input type="text" name="producto_id" value="{{ $detalle->producto->id }}" hidden>
-                                                <input type="text" name="precio" value="{{ $detalle->precio }}" hidden>
-
-                                                <input type="number" min="1" style="font-size: clamp(0.7rem, 3vw, 0.8rem);" name="cantidad_detalle_compra"
-                                                    value="{{ $detalle->cantidad_detalle_compra }}" id="cantidad-input" 
-                                                    class="form-control cantidad-input">
-                                                
-                                                <!-- Needed to send form -->
-                                                <button type="submit" class="btn btn-primary btn-sm" style="font-size: clamp(0.5rem, 3vw, 0.5rem); display: none">Actualizar</button>
-                                            </form>
-                                        </td>
-                                        <td>L {{ number_format($detalle->precio, 2, ".", ",") }}</td>
-                                        <td>L {{ number_format($detalle->precio * $detalle->cantidad_detalle_compra, 2, ".", ",") }}</td>
-                                        <td style="max-width: 4rem">
-                                            <form action="{{ route('compras.remove_item', $detalle->id) }}" method="POST">
-                                                @csrf
-                                                @method('DELETE') 
-                                                
-                                                <button type="submit" class="borrar-producto fas text-lg fa-trash-alt text-danger" style="border: none; background: none; cursor: pointer;"></button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                    @php
-                                        $sum += $detalle->precio * $detalle->cantidad_detalle_compra;
-                                    @endphp
-                                @empty
-                                    <tr>
-                                        <td colspan="6" style="text-align: center; text-decoration: underline">Sin productos en la lista de compras.</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
+                            @empty
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td style="text-align: center; text-decoration: underline">Sin productos en la lista de compras.</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                     </div>
                     <hr>
                 </div>
@@ -292,7 +291,7 @@
                             <div class="col-6">
                                 <div class="card" style="border: 1px solid #e3e3e3">
                                     <span style="font-size: clamp(0.6rem, 3vw, 0.7rem); color: lightgray; padding: 10px">Imagen del producto</span>
-                                    <img id="imagen_producto" src="/images/products/no_image_available.png" width="auto" height="280" style="object-fit: contain; padding: 15px">
+                                    <img id="imagen_producto" src="/images/products/no_image_available.png" width="auto" height="220" style="object-fit: contain; padding: 15px">
                                 </div>
                             </div>
                         </div>
@@ -341,7 +340,25 @@
             display: block;
             opacity: 1;
         }
+
+        .dt-buttons{
+            display: none;
+        }
+
+        #example_filter{
+            display: block;
+            float: left;
+        }
+
+        #example_info{
+            font-size: clamp(0.6rem, 3vw, 0.6rem);
+            font-style: italic;
+            font-weight: bold;
+        }
     </style>
+
+    @include('layouts.datatables')
+    <script src="{{ asset('dataTable_configs/dataTable_purchase_create.js') }}"></script>
 
     <!-- Get product data -->
     <script>
