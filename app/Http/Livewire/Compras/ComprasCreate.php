@@ -109,7 +109,6 @@ class ComprasCreate extends Component
     public function actualizar_total($cantidad, $index = 0)
     {
         // actualizo la cantidad y el total
-
         $stock = Producto::findOrFail($this->carrito[$index]["producto_id"])->existencia;
 
             if ( $cantidad >= $stock ) {
@@ -136,7 +135,7 @@ class ComprasCreate extends Component
         $this->carrito[$index]["total"] = $this->carrito[$index]["cantidad_detalle_compra"] * $this->carrito[$index]["precio_compra"];
     }
 
-    public function agregar_item_carrito($producto)
+    public function agregar_item($producto)
     {
         $item = [
             "producto_id" => $producto["id"],
@@ -177,7 +176,6 @@ class ComprasCreate extends Component
 
     public function guardar($pagar = false)
     {
-
 
         if (!$this->editar) {
             // valido los datos del formulario
@@ -263,7 +261,7 @@ class ComprasCreate extends Component
         }
     }
 
-    public function eliminar_item_carrito($index)
+    public function eliminar_item($index)
     {
         // elimino el item del arreglo
         unset($this->carrito[$index]);

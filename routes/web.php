@@ -50,10 +50,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     /* Purchases registration */
     Route::resource('/compras', 'App\Http\Controllers\CompraClienteController')->names('compras');
-    
-    // Purchase livewire
-    Route::get('/compras/create', ComprasCreate::class)->name('compras.create');
-    
+    Route::post('/compras/update_list', 'App\Http\Controllers\CompraClienteController@newItemOrQuantity')->name('compras.update_list');
+    Route::delete('/compras/remove_item/{id}', 'App\Http\Controllers\CompraClienteController@removeItem')->name('compras.remove_item');
+
     Route::post('/compras/guardar', 'App\Http\Controllers\CompraClienteController@compra_guardar')->name('compras.guardar_compra');
 
     // Sales invoices

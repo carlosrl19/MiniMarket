@@ -36,7 +36,7 @@
             <div class="row" id="tblaBody">
                 <div class="col-lg-6">
                     <div class="table-responsive" id="tblaBody">
-                        <table class="table table" id="dataTable">
+                        <table class="table table-striped" id="dataTable">
                             <thead class="card-header py-3" style="background: #1a202c; color: white;">
                             <tr>
                                 <th>N°</th>
@@ -48,28 +48,48 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @php
-                                $sum = 0;
-                            @endphp
-                            @forelse($compra->detalle_compra as $i => $detalle)
-                                <tr>
-                                    <td>{{ ++$i }}</td>
-                                    <td>{{ $detalle->producto->marca}} - {{ $detalle->producto->modelo}} </td>
-                                    <td>{{ $detalle->cantidad_detalle_compra }}</td>
-                                    <td>L {{ number_format($detalle->precio, 2, ".", ",") }}</td>
-                                    <td>L {{ number_format($detalle->precio*$detalle->cantidad_detalle_compra, 2, ".", ",") }}</td>
-                                    <td style="max-width: 4rem">
-                                        <a class="borrar-producto fas text-lg fa-trash-alt text-danger" wire:click.prevent="eliminar_item_carrito({{$i}})"></a>
-                                    </td>
-                                </tr>
                                 @php
-                                    $sum += $detalle->precio*$detalle->cantidad_detalle_compra;
+                                    $sum = 0;
                                 @endphp
-                            @empty
-                                <tr>
-                                    <td colspan="8">Sin detalles disponibles en la base de datos.</td>
-                                </tr>
-                            @endforelse
+                                @forelse($compra->detalle_compra as $i => $detalle)
+                                    <tr data-detalle-id="{{ $detalle->id }}">
+                                        <td>{{ ++$i }}</td>
+                                        <td>{{ $detalle->producto->marca }} - {{ $detalle->producto->modelo }}</td>
+                                        
+                                        <td style="min-width: 15px; max-width: 15px">
+                                            <form action="{{ route('compras.update_list') }}" method="POST" style="display: inline;">
+                                                @csrf
+                                                <input type="text" name="compra_id" id="compra_id" value="{{ $compra->id }}" hidden>
+                                                <input type="text" name="producto_id" value="{{ $detalle->producto->id }}" hidden>
+                                                <input type="text" name="precio" value="{{ $detalle->precio }}" hidden>
+
+                                                <input type="number" min="1" style="font-size: clamp(0.7rem, 3vw, 0.8rem);" name="cantidad_detalle_compra"
+                                                    value="{{ $detalle->cantidad_detalle_compra }}" id="cantidad-input" 
+                                                    class="form-control cantidad-input">
+                                                
+                                                <!-- Needed to send form -->
+                                                <button type="submit" class="btn btn-primary btn-sm" style="font-size: clamp(0.5rem, 3vw, 0.5rem); display: none">Actualizar</button>
+                                            </form>
+                                        </td>
+                                        <td>L {{ number_format($detalle->precio, 2, ".", ",") }}</td>
+                                        <td>L {{ number_format($detalle->precio * $detalle->cantidad_detalle_compra, 2, ".", ",") }}</td>
+                                        <td style="max-width: 4rem">
+                                            <form action="{{ route('compras.remove_item', $detalle->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE') 
+                                                
+                                                <button type="submit" class="borrar-producto fas text-lg fa-trash-alt text-danger" style="border: none; background: none; cursor: pointer;"></button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    @php
+                                        $sum += $detalle->precio * $detalle->cantidad_detalle_compra;
+                                    @endphp
+                                @empty
+                                    <tr>
+                                        <td colspan="6" style="text-align: center; text-decoration: underline">Sin productos en la lista de compras.</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -82,6 +102,7 @@
                         <div class="form-group row">
                             <div class="col-sm-6 mb-3 mb-sm-0">
                                 <input type="text" name="compra_id" id="compra_id" value="{{ $compra->id }}" hidden>
+
                                 <label for="docummento_compra">Factura:</label>
                                 <input type="text" readonly class="form-control @error('docummento_compra') is-invalid @enderror" id="docummento_compra"
                                        name="docummento_compra" value="CP-{{Carbon\Carbon::now()->setTimezone('America/Costa_Rica')->format('Y-md-Hms')}}" required autocomplete="off"
@@ -93,6 +114,7 @@
                                 </span>
                                 @enderror
                             </div>
+                            
                             <div class="col-sm-6">
                                 <label for="fecha_compra">Fecha:</label>
                                 <input type="datetime-local" class="form-control @error('fecha_compra') is-invalid @enderror"
@@ -146,24 +168,35 @@
 
                             <div class="col-sm-4 mb-1 mb-sm-0">
                                 <a href="{{ route('compras.index') }}" style="display: inline-block; background: #2c3034; color: white; border: 2px solid #ffffff; border-radius: 10px;"
-                                   class="btn btn-google  btn-sm btn-user btn-block">
-                                    {{ __('Regresar') }}
+                                   class="btn btn-google btn-sm btn-user btn-block">
+                                    <i class="fas fa-arrow-left"></i> {{ __('Regresar') }}
                                 </a>
                             </div>
 
-                            <div class="col-sm-5">
-                                <a style="display: inline-block; background: #b02a37; color: white; border: 2px solid #ffffff;border-radius: 10px;"
+                            <div class="col-sm-3">
+                                <a style="display: inline-block; background: #b02a37; color: white; border: 2px solid #ffffff; border-radius: 10px;"
                                    data-toggle="modal" data-target="#modal_agregar_detalle" class="btn btn-google btn-user btn-block" onclick="provedor()">
                                    <i class="fas fa-plus-circle"></i> Productos
                                 </a>
                             </div>
                             
-                            <div class="col-sm-3 mb-3 mb-sm-0">
-                                <button type="submit" style="display: inline-block; color: white; border: 2px solid #ffffff; border-radius: 10px;"
-                                        class="btn btn-sm btn-primary btn-user btn-block">
-                                    {{ __('Registrar') }}
-                                </button>
-                            </div>                            
+                            @if($sum == 0)
+                                <div class="col-sm-5 mb-3 mb-sm-0">
+                                    <button class="btn btn-sm btn-warning" type="button" disabled style="padding: 8px; font-size: clamp(0.5rem, 3vw, 1rem); border-radius: 10px; margin: 2px; width: 100%">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                        <span style="font-size: clamp(0.6rem, 3vw, 0.82rem)">
+                                            Agregar productos
+                                        </span>
+                                    </button>
+                                </div>
+                            @else
+                                <div class="col-sm-5 mb-3 mb-sm-0">
+                                    <button type="submit" style="display: inline-block; color: white; border: 2px solid #ffffff; border-radius: 10px;"
+                                            class="btn btn-sm btn-primary btn-user btn-block">
+                                         <i class="fas fa-laptop"></i> {{ __('Registrar compra') }}
+                                    </button>
+                                </div>
+                            @endif
                         </div>
                     </form>
                 </div>
@@ -210,7 +243,7 @@
                                 <div class="row g-3">
                                     <div class="col-6">
                                         <div class="col-sm-12">
-                                            <label for="precio" class="text-secondary-d1">Precio de compra:</label>
+                                            <label for="precio" class="text-secondary-d1">Precio compra:</label>
                                             <input type="text"
                                                 class="form-control @error('precio') is-invalid @enderror"
                                                 id="precio"
@@ -229,7 +262,7 @@
                                     <br>
                                     <div class="col-6">
                                         <div class="col-sm-12">
-                                            <label for="existencia" class="text-secondary-d1">Existencia actual:</label>
+                                            <label for="existencia" class="text-secondary-d1">Existencia:</label>
                                             <input type="text"
                                                 class="form-control @error('existencia') is-invalid @enderror"
                                                 id="existencia"
@@ -248,7 +281,7 @@
 
                                 <br>
                                 <div class="col">
-                                    <label for="firstName" class="form-label">Cantidad a comprar:</label>
+                                    <label for="cantidad_detalle_compra" class="form-label">Cantidad compra:</label>
                                     <input type="number" min="1" class="form-control" id="cantidad_detalle_compra"
                                         name="cantidad_detalle_compra" value="" required>
                                 </div>
@@ -258,7 +291,7 @@
 
                             <div class="col-6">
                                 <div class="card" style="border: 1px solid #e3e3e3">
-                                    <span style="font-size: clamp(0.6rem, 3vw, 0.8rem)">Imagen del producto</span>
+                                    <span style="font-size: clamp(0.6rem, 3vw, 0.7rem); color: lightgray; padding: 10px">Imagen del producto</span>
                                     <img id="imagen_producto" src="/images/products/no_image_available.png" width="auto" height="280" style="object-fit: contain; padding: 15px">
                                 </div>
                             </div>
@@ -275,21 +308,42 @@
         </div>
     </div>
 
-    <style>
-    .table-responsive {
-        max-height: 400px;
-        overflow-y: auto;
-        display: block;
-    }
+    <div id="toast" class="toast">Presione ENTER para guardar los cambios.</div>
 
-    .table thead th {
-        position: sticky;
-        top: 0;
-        background-color: #000;
-        z-index: 1;
-    }
+    <style>
+        .table-responsive {
+            max-height: 400px;
+            overflow-y: auto;
+            display: block;
+        }
+
+        .table thead th {
+            position: sticky;
+            top: 0;
+            background-color: #000;
+            z-index: 1;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: none; /* Oculto por defecto */
+            transition: opacity 0.5s ease;
+            opacity: 0;
+        }
+
+        .toast.show {
+            display: block;
+            opacity: 1;
+        }
     </style>
 
+    <!-- Get product data -->
     <script>
         function funcionObtenerCosto(){ // Obtener existencia también
             var select = document.getElementById("producto_id");
@@ -317,6 +371,7 @@
     <script src="{{ asset('vendor/tomselect/tom-select.complete.js') }}"></script>
     <script src="{{ asset('js/tomselect/ts_products.js') }}"></script>
 
+    <!-- Img viewer -->
     <script>
         function mostrarImagen(select) {
             const selectedOption = select.options[select.selectedIndex];
@@ -339,6 +394,44 @@
                 imagenElement.src = '/images/products/no_image_available.png';
             }
         }
+    </script>
+
+    <!-- Items to purchase -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const quantityInputs = document.querySelectorAll('.cantidad-input');
+
+            quantityInputs.forEach(input => {
+                input.addEventListener('change', function() {
+                    const detalleId = this.dataset.detalleId;
+                    const newQuantity = parseInt(this.value);
+                    const existingRow = document.querySelector(`tr[data-detalle-id="${detalleId}"]`);
+
+                    if (existingRow) {
+                        const totalQuantity = newQuantity;
+
+                        // Update the quantity and subtotal
+                        existingRow.querySelector('.cantidad-input').value = totalQuantity;
+                        existingRow.querySelector('td:nth-child(5)').innerText = 'L ' + (totalQuantity * parseFloat(existingRow.querySelector('input[name="precio"]').value)).toFixed(2);
+                    }
+                });
+            });
+        });
+    </script>
+
+    <!-- Toast -->
+    <script>
+        document.getElementById('cantidad-input').addEventListener('input', function() {
+            const toast = document.getElementById('toast');
+
+            setTimeout(function() {
+                toast.classList.add('show');
+
+                setTimeout(function() {
+                    toast.classList.remove('show');
+                }, 5000);
+            }, 300);
+        });
     </script>
 
 @endsection

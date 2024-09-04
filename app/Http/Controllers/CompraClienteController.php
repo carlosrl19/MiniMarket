@@ -24,6 +24,7 @@ class CompraClienteController extends Controller
     
         return view('compra.compras_index', compact('compras', 'com'));
     }
+
     public function create()
     {
         $provedores = Proveedor::all();
@@ -32,23 +33,25 @@ class CompraClienteController extends Controller
                 'productos.prec_venta_may', 'productos.imagen_producto', 'productos.prec_venta_fin','productos.prec_compra','productos.id_categoria',
                 'categorias.name')
             ->get();
-        $compra = Compra::where('estado_compra', '=', 'p')->where('user_id', '=', Auth::user()->id)->get();
 
-        if ($compra->count() == 0) {
-            $compra_nueva = new Compra();
-            $compra_nueva->docummento_compra = '';
-            $compra_nueva->fecha_compra = Carbon::now();
-            $compra_nueva->proveedor_id = 1;
-            $compra_nueva->user_id = Auth::user()->id;
-            $compra_nueva->estado_compra = 'p';
-            $compra_nueva->save();
+        // Obtener la compra existente o crear una nueva
+        $compra = Compra::where('estado_compra', '=', 'p')
+            ->where('user_id', '=', Auth::user()->id)
+            ->first(); // Cambiado a first() para obtener un solo registro o null
 
-            return view('compra.compras_create')->with('compra', $compra_nueva)
-                ->with('provedores', $provedores)
-                ->with('productos', $productos);
+        if (!$compra) {
+            // Si no hay compra, crea una nueva
+            $compra = new Compra();
+            $compra->docummento_compra = '';
+            $compra->fecha_compra = Carbon::now();
+            $compra->proveedor_id = 1; // Asegúrate de que este ID sea válido
+            $compra->user_id = Auth::user()->id;
+            $compra->estado_compra = 'p';
+            $compra->save();
         }
-
-        return view('compra.compras_create')->with('compra', $compra[0])
+        
+        // Pasar la compra (ya sea nueva o existente) a la vista
+        return view('compra.compras_create')->with('compra', $compra)
             ->with('provedores', $provedores)
             ->with('productos', $productos);
     }
@@ -84,6 +87,7 @@ class CompraClienteController extends Controller
         // Descargar el PDF automáticamente con el nombre personalizado
         $dompdf->stream($nombreArchivo, ['Attachment' => true]);
     }
+
     public function generarFacturaMesActual(Request $request)
     {
         // Obtener el mes seleccionado
@@ -137,29 +141,73 @@ class CompraClienteController extends Controller
         $dompdf->stream($nombreArchivo, ['Attachment' => true]);
     }
     
+    // Agregar items a la compra (indirectamente guarda el estado de la lista porque la actualiza)
     public function store(Request $request)
     {
-        if ( $request->input('id_prove') != '') {
+        // Update the supplier if provided
+        if ($request->input('id_prove') != '') {
             $compra = Compra::findOrFail($request->input('compra_id'));
             $compra->proveedor_id = $request->input('id_prove');
             $compra->save();
         }
-
-        $detalle = DetalleCompra::where('compra_id','=','')->where('producto_id','=','')->get();
-
-        $detalles = new DetalleCompra();
-        $detalles->compra_id = $request->input('compra_id');
-        $detalles->producto_id = $request->input('producto_id');
-        $detalles->cantidad_detalle_compra = $request->input('cantidad_detalle_compra');
-        $detalles->precio = $request->input('precio');
-        $detalles->save();
-
+    
+        // Check if the product already exists in the purchase details
+        $detalle = DetalleCompra::where('compra_id', $request->input('compra_id'))
+            ->where('producto_id', $request->input('producto_id'))
+            ->first();
+    
+        if ($detalle) {
+            // If it exists, update the quantity
+            $detalle->cantidad_detalle_compra = $request->input('cantidad_detalle_compra');
+            $detalle->save();
+        } else {
+            // If it doesn't exist, create a new entry
+            $detalles = new DetalleCompra();
+            $detalles->compra_id = $request->input('compra_id');
+            $detalles->producto_id = $request->input('producto_id');
+            $detalles->cantidad_detalle_compra = $request->input('cantidad_detalle_compra');
+            $detalles->precio = $request->input('precio');
+            $detalles->save();
+        }
+    
         return redirect()->route('compras.create');
     }
 
+    // Actualizar desde el input del front-end
+    public function newItemOrQuantity(Request $request)
+    {
+        // Update the supplier if provided
+        if ($request->input('id_prove') != '') {
+            $compra = Compra::findOrFail($request->input('compra_id'));
+            $compra->proveedor_id = $request->input('id_prove');
+            $compra->save();
+        }
+    
+        // Check if the product already exists in the purchase details
+        $detalle = DetalleCompra::where('compra_id', $request->input('compra_id'))
+            ->where('producto_id', $request->input('producto_id'))
+            ->first();
+    
+        if ($detalle) {
+            // If it exists, update the quantity
+            $detalle->cantidad_detalle_compra = $request->input('cantidad_detalle_compra');
+            $detalle->save();
+        } else {
+            // If it doesn't exist, create a new entry
+            $detalles = new DetalleCompra();
+            $detalles->compra_id = $request->input('compra_id');
+            $detalles->producto_id = $request->input('producto_id');
+            $detalles->cantidad_detalle_compra = $request->input('cantidad_detalle_compra');
+            $detalles->precio = $request->input('precio');
+            $detalles->save();
+        }
+    
+        return redirect()->route('compras.create');
+    }
+
+    // Finalizar compra y guardarla
     public function compra_guardar(Request $request)
     {
-
         $request->validate([
             'compra_id'=>  ['required'],
             'docummento_compra' => ['required','unique:compras,docummento_compra,'.$request->input('docummento_compra')],
@@ -174,7 +222,6 @@ class CompraClienteController extends Controller
         $compra->estado_compra = 'g';
         $compra->save();
 
-
         foreach ($compra->detalle_compra as $key => $value) {
             $prodcuto = Producto::findOrFail($value->producto_id);
             $prodcuto->existencia = $prodcuto->existencia + $value->cantidad_detalle_compra;
@@ -183,6 +230,21 @@ class CompraClienteController extends Controller
 
         return redirect()->route('compras.index')->with("exito", "La compra fue registrada exitosamente.");
     }
+
+    // Eliminar item de la compra
+    public function removeItem($id)
+    {
+        // Encuentra el detalle de compra por ID
+        $detalle = DetalleCompra::findOrFail($id);
+
+        // Elimina el detalle de compra
+        $detalle->delete();
+
+        // Redirige a la lista de compras con un mensaje de éxito
+        return redirect()->route('compras.create')->with('success', 'Producto eliminado correctamente.');
+    }
+    
+    // Cancelar compra
     public function destroy($id)
     {
         DB::delete('delete from detalle_compras where compra_id = ?', [$id]);
