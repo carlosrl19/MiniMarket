@@ -26,20 +26,7 @@
 
     <!-- CSS Bootstrap 5.2 -->
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-
-    <!-- Spinner -->
-    <style>
-        .spinner-border {
-            width: 3rem;
-            height: 3rem;
-        }
-
-        .spinner_text{
-            color: #fff;
-            font-weight: bold;
-        }
-
-    </style>
+    
 
     @yield('head')
 
@@ -55,7 +42,7 @@
     <div id="spinner" style="position: fixed; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 9999; display: flex; justify-content: center; align-items: center;">
         <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
         </div>
-        <span class="spinner_text">&nbsp; Cargando...</span>
+        <span id="loadingText" style="color: #fff; font-weight: bold; display: inline-block;">&nbsp; Cargando...</span>
     </div>
 
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
@@ -254,11 +241,8 @@
 
 @stack('scripts')
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        document.getElementById("spinner").style.display = "none";
-    });
-</script>
+<!-- Spinner -->
+<script src="{{ asset('js/custom_scripts/spinner.js') }}"></script>
 
 </body>
 
