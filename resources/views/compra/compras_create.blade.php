@@ -51,15 +51,15 @@
                                 $sum = 0;
                             @endphp
                             @forelse($compra->detalle_compra as $i => $detalle)
-                                <tr data-detalle-id="{{ $detalle->id }}">
-                                    <td>{{ $detalle->producto->marca }} - {{ $detalle->producto->modelo }}</td>
-                                    <td style="min-width: 15px; max-width: 15px">
+                                <tr style="font-size: clamp(0.6rem, 3vw, 0.7rem)" data-detalle-id="{{ $detalle->id }}">
+                                    <td>{{ $detalle->producto->modelo }}</td>
+                                    <td style="min-width: 10px; max-width: 15px">
                                         <form action="{{ route('compras.update_list') }}" method="POST" style="display: inline;">
                                             @csrf
                                             <input type="text" name="compra_id" value="{{ $compra->id }}" hidden>
                                             <input type="text" name="producto_id" value="{{ $detalle->producto->id }}" hidden>
                                             <input type="text" name="precio" value="{{ $detalle->precio }}" hidden>
-                                            <input type="number" min="1" name="cantidad_detalle_compra" style="font-size: clamp(0.6rem, 3vw, 0.7rem);"
+                                            <input type="number" min="1" name="cantidad_detalle_compra" style="width: 80%; font-size: clamp(0.6rem, 3vw, 0.7rem);"
                                                 value="{{ $detalle->cantidad_detalle_compra }}" class="form-control cantidad-input" id="cantidad-input_{{ $detalle->id }}">
                                             <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
                                                 <i class="fas fa-save"></i>&nbsp;<span style="font-size: clamp(0.6rem, 3vw, 0.7rem)">Nuevos cambios realizados.</span>
@@ -73,7 +73,7 @@
                                         <form action="{{ route('compras.remove_item', $detalle->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE') 
-                                            <button type="submit" class="borrar-producto fas text-lg fa-trash-alt text-danger" style="border: none; background: none; cursor: pointer;"></button>
+                                            <button type="submit" class="borrar-producto fas text-lg fa-trash-alt text-danger" style="border: none; background: none; cursor: pointer; font-size: clamp(0.7rem, 3vw, 0.9rem)"></button>
                                         </form>
                                     </td>
                                 </tr>
@@ -346,12 +346,6 @@
         #example_filter{
             display: block;
             float: left;
-        }
-
-        #example_info{
-            font-size: clamp(0.6rem, 3vw, 0.6rem);
-            font-style: italic;
-            font-weight: bold;
         }
     </style>
 

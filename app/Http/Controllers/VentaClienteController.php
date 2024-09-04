@@ -65,7 +65,7 @@ class VentaClienteController extends Controller
         $dompdf->render();
     
         // Nombre del archivo con la fecha y hora actual
-        $nombreArchivo = 'Cierre de caja diario ' . \Carbon\Carbon::now()->format('d-m-Y h:iA') . '.pdf';
+        $nombreArchivo = 'Cierre de caja diario ' . $fecha . '.pdf';
     
         // Descargar el PDF automáticamente con el nombre personalizado
         $dompdf->stream($nombreArchivo, ['Attachment' => true]);

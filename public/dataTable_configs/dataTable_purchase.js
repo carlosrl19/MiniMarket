@@ -100,31 +100,12 @@
         responsive: true,
         paginate: true,
         info: true,
-        searching: true,
+        searching: false,
         lengthChange: true,
         aLengthMenu: [
             [10, 20, 50],
             [10, 20, 50]
         ],
-    });
-
-   // Script to show a filter per column, excluding the first and the last columns
-    $("#example tfoot th").each(function(index) {
-        // Check if the current index is not the first one and it is less than the number of columns minus one (to exclude the last column)
-        if (index < $("#example thead th").length) {
-            var title = $("#example thead th").eq($(this).index()).text();
-            $(this).html('<input type="text" data-kt-filter="search" style="width: 100%;" placeholder="Filtrar ' + title + '" />');
-        }
-    });
-
-    // Apply the filter
-    $("input").on("keyup change", function() {
-        var columnIndex = $(this).parent().index();
-        if (columnIndex < $("#example thead th").length) {
-            table.column(columnIndex + ":visible").search(this.value).draw();
-        } else {
-            table.column(columnIndex + ":visible").search('').draw();
-        }
     });
 
     table.on("click", "tbody tr", function() {
