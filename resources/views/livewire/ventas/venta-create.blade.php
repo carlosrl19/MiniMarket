@@ -96,7 +96,7 @@
             <div class="card" style="display: flex; min-height: 83vh; max-height: 83vh; overflow: auto">
                 <div class="card-header card-header-fixed">
                     <div class="mb-1" style="display: flex;">
-                        <button class="btn btn-sm btn-danger" type="button" disabled><i class="fas fa-search"></i></button>
+                        <button class="btn btn-sm btn-danger" style="margin-right: 5px;" type="button" disabled><i class="fas fa-search"></i></button>
                         <input type="text" autocomplete="off" name="buscar_producto" id="buscar_producto" wire:model="filtro_producto" class="form-control border-1 small" placeholder="Buscar producto..." autocomplete="off" aria-label="Search" aria-describedby="basic-addon2">
                     </div>
                 </div>

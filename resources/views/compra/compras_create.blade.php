@@ -39,7 +39,6 @@
                     <table class="table table-striped" id="example">
                         <thead class="card-header py-3" style="background: #1a202c; color: white;">
                             <tr>
-                                <th>N°</th>
                                 <th>Producto</th>
                                 <th>Cantidad</th>
                                 <th>Precio</th>
@@ -53,7 +52,6 @@
                             @endphp
                             @forelse($compra->detalle_compra as $i => $detalle)
                                 <tr data-detalle-id="{{ $detalle->id }}">
-                                    <td>{{ ++$i }}</td>
                                     <td>{{ $detalle->producto->marca }} - {{ $detalle->producto->modelo }}</td>
                                     <td style="min-width: 15px; max-width: 15px">
                                         <form action="{{ route('compras.update_list') }}" method="POST" style="display: inline;">
@@ -62,8 +60,11 @@
                                             <input type="text" name="producto_id" value="{{ $detalle->producto->id }}" hidden>
                                             <input type="text" name="precio" value="{{ $detalle->precio }}" hidden>
                                             <input type="number" min="1" name="cantidad_detalle_compra" style="font-size: clamp(0.6rem, 3vw, 0.7rem);"
-                                                value="{{ $detalle->cantidad_detalle_compra }}" class="form-control cantidad-input">
-                                            <button type="submit" class="btn btn-primary btn-sm" style="display: none">Actualizar</button>
+                                                value="{{ $detalle->cantidad_detalle_compra }}" class="form-control cantidad-input" id="cantidad-input_{{ $detalle->id }}">
+                                            <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                                                <i class="fas fa-save"></i>&nbsp;<span style="font-size: clamp(0.6rem, 3vw, 0.7rem)">Nuevos cambios realizados.</span>
+                                                <button type="submit" class="btn btn-primary btn-sm" style="font-size: clamp(0.6rem, 3vw, 0.7rem); float: right">Guardar cambios</button>
+                                            </div>
                                         </form>
                                     </td>
                                     <td>L {{ number_format($detalle->precio, 2, ".", ",") }}</td>
@@ -84,7 +85,6 @@
                                     <td></td>
                                     <td></td>
                                     <td style="text-align: center; text-decoration: underline">Sin productos en la lista de compras.</td>
-                                    <td></td>
                                     <td></td>
                                     <td></td>
                                 </tr>
@@ -307,8 +307,6 @@
         </div>
     </div>
 
-    <div id="toast" class="toast">Presione ENTER para guardar los cambios.</div>
-
     <style>
         .table-responsive {
             max-height: 400px;
@@ -438,16 +436,20 @@
 
     <!-- Toast -->
     <script>
-        document.getElementById('cantidad-input').addEventListener('input', function() {
-            const toast = document.getElementById('toast');
-
-            setTimeout(function() {
-                toast.classList.add('show');
+       document.querySelectorAll('.cantidad-input').forEach(function(input) {
+            input.addEventListener('input', function() {
+                const toast = document.getElementById('toast');
+                const detalleId = this.id.split('_')[1];
 
                 setTimeout(function() {
-                    toast.classList.remove('show');
-                }, 5000);
-            }, 300);
+                    toast.classList.add('show');
+                    toast.querySelector('.detalle-id').textContent = detalleId;
+
+                    setTimeout(function() {
+                        toast.classList.remove('show');
+                    }, 7000);
+                }, 300);
+            });
         });
     </script>
 

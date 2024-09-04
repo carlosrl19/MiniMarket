@@ -16,7 +16,6 @@
 
             // Personaliza el mensaje de cantidad de filas mostradas
             lengthMenu: "Mostrando _MENU_ registros por página",
-            infoFiltered: "- Filtrado de _MAX_ registros.",
             sInfoEmpty: "Sin registros para mostrar",
             info: "Total de lista de compras: _TOTAL_ productos.",
             emptyTable: "No se encontraron registros de pagarés pagados para mostrar.",
@@ -24,7 +23,6 @@
                 "No se encontraron registros que coincidan con la búsqueda.",
         },
         columns: [
-            { "orderable": false }, // i++
             { "orderable": true },
             { "orderable": false }, // Input to quantity
             { "orderable": true },

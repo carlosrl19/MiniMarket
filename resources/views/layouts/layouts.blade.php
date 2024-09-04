@@ -27,6 +27,20 @@
     <!-- CSS Bootstrap 5.2 -->
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
 
+    <!-- Spinner -->
+    <style>
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+        }
+
+        .spinner_text{
+            color: #fff;
+            font-weight: bold;
+        }
+
+    </style>
+
     @yield('head')
 
     @livewireStyles
@@ -37,6 +51,13 @@
 
 <!-- Page Wrapper -->
 <div id="wrapper">
+
+    <div id="spinner" style="position: fixed; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 9999; display: flex; justify-content: center; align-items: center;">
+        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+        </div>
+        <span class="spinner_text">&nbsp; Cargando...</span>
+    </div>
+
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
@@ -232,6 +253,13 @@
 <script src={{ asset("admin/js/sb-admin-2.min.js") }}></script>
 
 @stack('scripts')
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("spinner").style.display = "none";
+    });
+</script>
+
 </body>
 
 </html>
