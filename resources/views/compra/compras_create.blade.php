@@ -62,8 +62,8 @@
                                             <input type="number" min="1" name="cantidad_detalle_compra" style="width: 80%; font-size: clamp(0.6rem, 3vw, 0.7rem);"
                                                 value="{{ $detalle->cantidad_detalle_compra }}" class="form-control cantidad-input" id="cantidad-input_{{ $detalle->id }}">
                                             <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                                                <i class="fas fa-save"></i>&nbsp;<span style="font-size: clamp(0.6rem, 3vw, 0.7rem)">Nuevos cambios realizados.</span>
-                                                <button type="submit" class="btn btn-primary btn-sm" style="font-size: clamp(0.6rem, 3vw, 0.7rem); float: right">Guardar cambios</button>
+                                                <i class="fas fa-save"></i>&nbsp;<span style="font-size: clamp(0.6rem, 3vw, 0.8rem)">Nuevos cambios realizados.</span>
+                                                <button type="submit" class="btn btn-primary btn-sm" style="font-size: clamp(0.6rem, 3vw, 0.7rem); float: right; display: none">Guardar cambios</button>
                                             </div>
                                         </form>
                                     </td>
