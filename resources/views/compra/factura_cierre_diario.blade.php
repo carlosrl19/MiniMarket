@@ -25,6 +25,7 @@
         <thead style="font-size: 0.7rem; color: #fff; background-color: #0a4661;">
             <tr>
                 <th class="textcenter">Nº</th>
+                <th class="textcenter">Fecha Hora</th>
                 <th class="textcenter">Producto</th>
                 <th class="textcenter">Cantidad</th>
                 <th class="textright" width="70px">Precio</th>
@@ -40,7 +41,8 @@
                     @foreach ($compra->detalle_compra as $detalle)
                         <tr>
                             <td class="textcenter">{{++$i}}</td>
-                            <td class="textcenter">{{ $detalle->producto->marca." ".$detalle->producto->modelo }}</td>
+                            <td class="textcenter">{{ $compra->created_at->format('d-m-Y h:i:s A') }}</td>
+                            <td class="textcenter">{{ $detalle->producto->modelo }}</td>
                             <td class="textcenter">{{ $detalle->cantidad_detalle_compra }}</td>
                             <td class="textright">{{ number_format($detalle->precio, 2, ".", ",") }}</td>
                             <td class="textright">{{ number_format($detalle->precio * $detalle->cantidad_detalle_compra, 2, ".", ",") }}</td>
@@ -58,7 +60,7 @@
         </tbody>
         <tfoot id="detalle_totales">
             <tr>
-                <th colspan="4" class="textright"><h3>Total</h3></th>
+                <th colspan="5" class="textright"><h3>Total</h3></th>
                 <th colspan="1" class="textright"><h3>L. {{ number_format($total, 2, ".", ",") }}</h3></th>
             </tr>
         </tfoot>

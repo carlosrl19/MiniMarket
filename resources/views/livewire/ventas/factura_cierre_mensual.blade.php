@@ -31,7 +31,7 @@
         <thead style="font-size: 0.7rem; color: #fff; background-color: #2C7865;">
             <tr>
                 <th class="textcenter">Nº</th>
-                <th class="textcenter">Fecha venta</th>
+                <th class="textcenter">Fecha Hora</th>
                 <th class="textcenter">Producto</th>
                 <th class="textcenter">Cantidad</th>
                 <th class="textright" width="70px">Precio</th>
@@ -47,8 +47,8 @@
                     @foreach ($venta->detalle_venta as $detalle)
                         <tr>
                             <td class="textcenter">{{++$i}}</td>
-                            <td class="textcenter">{{ $detalle->venta->fecha_factura }}</td>
-                            <td class="textcenter">{{ $detalle->producto->marca." ".$detalle->producto->modelo }}</td>
+                            <td class="textcenter">{{ $detalle->created_at->format('d-m-Y h:i:s A') }}</td>
+                            <td class="textcenter">{{ $detalle->producto->modelo }}</td>
                             <td class="textcenter">{{ $detalle->cantidad_detalle_venta }}</td>
                             <td class="textright">{{ number_format($detalle->precio_venta, 2, ".", ",") }}</td>
                             <td class="textright">{{ number_format($detalle->precio_venta * $detalle->cantidad_detalle_venta, 2, ".", ",") }}</td>
