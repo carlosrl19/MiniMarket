@@ -4,10 +4,10 @@
         <tr>
             <td class="info_empresa">
                 <div>
-                    <span class="h2"><strong>MINIMARKET ACAI 2</strong></span>
+                    <span class="h2"><strong>MINIMARKET ACAI 1</strong></span>
                     <p>Todo lo que necesites</p>
                     <p>Teléfono: +(504) 8965-2710</p>
-                    <p>Ubicados en Plaza 20, 20 Calle SE, 7 Y 8 avenida SE</p>
+                    <p>Ubicados entre 13 y 14 calle SO, esquina opuesta a Planet Fitness Gym.</p>
                 </div>
             </td>
             <td class="info_factura">
