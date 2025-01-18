@@ -14,15 +14,10 @@ class ProductoController extends Controller
     public function index(Request $request)
     {
         $productos = Producto::with('categoria')->get();
-        return view('producto.productos_index')->with('productos', $productos);
-    }
-
-    public function create()
-    {
         $categorias = Categoria::where('status','=',1)->get();
-        return view('producto.productos_create', compact('categorias'));
+        return view('producto.productos_index', compact('productos', 'categorias'));
     }
-
+    
     public function store(StoreRequest $request)
     {
         $crearprod = new Producto();
